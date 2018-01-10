@@ -1,0 +1,22 @@
+{
+    "name": "nicolapps/tpgbot",
+    "description": "Geneva public transit Twitter bot",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicolas Ettlin",
+            "email": "webmaster@nicolapps.ch"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^5.3",
+        "vlucas/phpdotenv": "^2.4",
+        "abraham/twitteroauth": "^0.5.4"
+    },
+    "autoload": {
+        "psr-4": { 
+            "App\\": "app/"
+        }
+    }
+}
