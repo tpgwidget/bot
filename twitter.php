@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $requestBody = file_get_contents('php://input');
 
     // Verify if the request comes from Twitter (see https://dev.twitter.com/webhooks/securing)
-    $signature = $_SERVER['HTTP_X_TWITTER_WEBHOOKS_SIGNATURE'];    
+    $signature = $_SERVER['HTTP_X_TWITTER_WEBHOOKS_SIGNATURE'];
     if (! Twitter::verifySignature($signature, $requestBody)) {
         header('HTTP/1.1 403 Forbidden');
         die('Invalid signature');
     }
-    
+
     $requestBody = json_decode($requestBody);
 
     foreach ($requestBody->direct_message_events as $event) {

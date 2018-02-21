@@ -6,6 +6,10 @@ use App\Models\Twitter;
 
 class Subscriptions
 {
+    /**
+     * Send a disruption
+     * @param  mixed[] $disruptions Disruptions data
+     */
     public static function send($disruptions)
     {
         foreach ($disruptions as $disruption)
@@ -16,10 +20,23 @@ class Subscriptions
             ]);
         }
     }
-    
-    private static function formatDisruption($disruption)
+
+    /**
+     * Format a disruption text
+     * @param  mixed[] $disruption Disruption data
+     * @return string              Disruption text
+     */
+    private static function formatDisruption(array $disruption)
     {
-        return '⚠️ '.$disruption['nature']. ' (ligne '.$disruption['lineCode'].')'
-            .PHP_EOL.PHP_EOL.(trim($disruption['place']) !== '' ? trim($disruption['place']).' – ' : '').$disruption['consequence'];
+        // Header (line and nature)
+        $text = '⚠️ '.$disruption['nature']. ' (ligne '.$disruption['lineCode'].')'.PHP_EOL.PHP_EOL;
+
+        // Place
+        $text .= (trim($disruption['place']) !== '' ? trim($disruption['place']).' – ' : '');
+
+        // Content
+        $text .= $disruption['consequence'];
+
+        return $text;
     }
 }

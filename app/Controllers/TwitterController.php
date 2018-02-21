@@ -6,6 +6,10 @@ use App\Models\Twitter;
 
 class TwitterController
 {
+    /**
+     * Handle a new message received by the bot user
+     * @param $message Twitter message_create event details object
+     */
     public static function newMessage($message)
     {
 /*
