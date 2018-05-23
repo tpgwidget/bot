@@ -2,6 +2,7 @@
 namespace TPGwidget\Bot\Models;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use TPGwidget\Bot\Models\TwitterDirectMessage;
 
 class Twitter
 {
@@ -46,5 +47,15 @@ class Twitter
             );
         }
         return self::$lib;
+    }
+
+    /**
+     * Shorthand method to create a direct message
+     * @param  string               $text The direct message content
+     * @return TwitterDirectMessage
+     */
+    public static function message(string $text): TwitterDirectMessage
+    {
+        return new TwitterDirectMessage($text);
     }
 }
