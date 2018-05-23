@@ -1,9 +1,7 @@
 <?php
-
-namespace App\Models;
+namespace TPGwidget\Bot\Models;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
-
 
 class Twitter
 {

@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Models;
+namespace TPGwidget\Bot\Models;
 
 class TPGOpenData
 {

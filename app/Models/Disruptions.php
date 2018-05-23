@@ -1,8 +1,7 @@
 <?php
+namespace TPGwidget\Bot\Models;
 
-namespace App\Models;
-
-use App\Models\TPGOpenData;
+use TPGwidget\Bot\Models\TPGOpenData;
 
 class Disruptions
 {

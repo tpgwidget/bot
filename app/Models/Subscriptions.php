@@ -1,8 +1,7 @@
 <?php
+namespace TPGwidget\Bot\Models;
 
-namespace App\Models;
-
-use App\Models\Twitter;
+use TPGwidget\Bot\Models\Twitter;
 
 class Subscriptions
 {

@@ -1,9 +1,8 @@
 <?php
+namespace TPGwidget\Bot\Controllers;
 
-namespace App\Controllers;
-
-use App\Models\Disruptions;
-use App\Models\Subscriptions;
+use TPGwidget\Bot\Models\Disruptions;
+use TPGwidget\Bot\Models\Subscriptions;
 
 class DisruptionsController
 {

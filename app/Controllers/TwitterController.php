@@ -1,8 +1,7 @@
 <?php
+namespace TPGwidget\Bot\Controllers;
 
-namespace App\Controllers;
-
-use App\Models\Twitter;
+use TPGwidget\Bot\Models\Twitter;
 
 class TwitterController
 {

@@ -1,9 +1,8 @@
 <?php
-
 require_once 'config.php';
 
-use App\Controllers\TwitterController;
-use App\Models\Twitter;
+use TPGwidget\Bot\Controllers\TwitterController;
+use TPGwidget\Bot\Models\Twitter;
 
 // Required Challenge Response Check
 // @link https://dev.twitter.com/webhooks/securing
