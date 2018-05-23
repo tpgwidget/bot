@@ -39,7 +39,7 @@ class Twitter
     {
         if (!isset(self::$lib)){
             self::$lib = new TwitterOAuth(
-                getenv('TWITTER_APP_CONSUMER_KEY')
+                getenv('TWITTER_APP_CONSUMER_KEY'),
                 getenv('TWITTER_APP_CONSUMER_SECRET'),
                 getenv('TWITTER_APP_TOKEN'),
                 getenv('TWITTER_APP_SECRET')
