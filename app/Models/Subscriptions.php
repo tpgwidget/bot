@@ -38,4 +38,21 @@ class Subscriptions
 
         return $text;
     }
+
+    /**
+     * Validate a line name
+     * @param  string      $input The user input (e.g. 'Le tram 12')
+     * @return string|bool        The well-formatted line name (e.g. '12'), or false
+     */
+    public static function validateLineName(string $input)
+    {
+        $matches = [];
+        $pattern = '/^(?:le |la )?(?:ligne |bus |tram )?([A-z]{1,2}|[0-9]{1,2})/i';
+
+        if (preg_match($pattern, $input, $matches) === 0) { // No valid name found
+            return false;
+        }
+
+        return strtoupper($matches[1]);
+    }
 }
