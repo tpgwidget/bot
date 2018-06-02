@@ -22,6 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $requestBody = json_decode($requestBody);
 
+    if (!is_array($requestBody->direct_message_events)) {
+        die();
+    }
+
     foreach ($requestBody->direct_message_events as $event) {
         // Only the new message that weren’t sent by the bot account
         if (($event->type === 'message_create') && ($event->message_create->sender_id !== getenv('TWITTER_ACCOUNT_ID'))) {
