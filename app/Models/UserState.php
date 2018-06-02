@@ -9,6 +9,8 @@ class UserState {
     // States
     //==============================================================================================
     const DEFAULT = 0;
+    const SUBSCRIBING = 1; // The user wants to subscribe to a line (waiting for a line number)
+    const UNSUBSCRIBING = 2; // The user wants to unsubscribe from a line (waiting for a line number)
 
     //==============================================================================================
     // Methods
@@ -31,7 +33,7 @@ class UserState {
             return UserState::DEFAULT;
         }
 
-        return $userStates[0]['state'];
+        return (int)$userStates[0]['state'];
     }
 
     /**
@@ -39,7 +41,7 @@ class UserState {
      * @param  string $userId   Twitter user ID
      * @param  int    $newState The new state to set
      */
-    public static function update($userId, int $newState)
+    public static function set($userId, int $newState)
     {
         global $db;
 

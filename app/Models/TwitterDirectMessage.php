@@ -46,6 +46,18 @@ class TwitterDirectMessage {
     }
 
     /**
+     * Add the default actions (home screen)
+     * @return TwitterDirectMessage $this (useful for method chaining)
+     */
+    public function withDefaultActions()
+    {
+        return $this
+            ->addAction(Strings::get('actions.subscribe'))
+            ->addAction(Strings::get('actions.unsubscribe'))
+            ->withoutGoHome();
+    }
+
+    /**
      * Sends the message to an user
      * @param  string               $userId
      * @return TwitterDirectMessage $this (useful for method chaining)
@@ -53,7 +65,7 @@ class TwitterDirectMessage {
     public function sendTo($userId)
     {
         if ($this->goHomeAction) {
-            $this->addAction('🏠 '.Strings::get('actions.goHome'));
+            $this->addAction(Strings::get('actions.goHome'));
         }
 
         Twitter::lib()->post('direct_messages/new', [
@@ -73,7 +85,7 @@ class TwitterDirectMessage {
             return '';
         }
 
-        $result = "\n\nActions :";
+        $result = "\n\nActions disponibles :";
 
         foreach ($this->actions as $action) {
             $result .= "\n• ".$action['title'];

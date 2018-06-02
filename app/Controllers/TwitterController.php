@@ -1,67 +1,64 @@
 <?php
 namespace TPGwidget\Bot\Controllers;
 
-use TPGwidget\Bot\Models\Twitter;
+use TPGwidget\Bot\Models\{Twitter, UserState, Strings, Subscriptions};
 
 class TwitterController
 {
     /**
-     * Handle a new message received by the bot user
-     * @param $message Twitter message_create event details object
+     * Handles a new message received by the bot user
+     * @param stdClass $event Twitter message_create event details object
      */
-    public static function newMessage($message)
+    public static function newMessage($event)
     {
-/*
-        Twitter::lib()->post('direct_messages/new', [
-            'user_id' => $message->message_create->sender_id,
-            'text' => 'Message bien reçu ! 😀'
-        ]);
-*/
-        // error_log(json_encode($message, JSON_PRETTY_PRINT), 3, __DIR__.'/../../log/twitter.log');
-/*
-        Twitter::lib()->user_request([
-            'method' => 'POST',
-            'url'    => Twitter::lib()->url('1.1/direct_messages/events/new'),
-            'params' => [
-                'event' => [
-                    'type' => 'message_create',
-                    'message_create' => [
-                        'target' => [
-                            'recipient_id' => $message->message_create->sender_id,
-                        ],
-                        'message_data' => [
-                            'text' => 'Test',
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-*/
+        $senderId = $event->message_create->sender_id;
+        $message = trim($event->message_create->message_data->text);
 
-/*
-        Twitter::lib()->user_request([
-            'method' => 'POST',
-              'url' => Twitter::lib()->url('1.1/statuses/update'),
-              'params' => array(
-                'status' => $message->message_create->sender_id
-              )
-        ]);
-*/
+        self::handleMessage($senderId, $message);
+    }
 
-/*
-        Twitter::lib()->request('POST', '/1.1/direct_messages/events/new', json_encode([
-            'event' => [
-                'type' => 'message_create',
-                'message_create' => [
-                    'target' => [
-                        'recipient_id' => $message->message_create->sender_id,
-                    ],
-                    'message_data' => [
-                        'text' => 'Test',
-                    ],
-                ],
-            ],
-        ]), true, false, ['Content-Type' => 'application/json']);
-*/
+    private static function handleMessage($senderId, $message)
+    {
+        switch ($message) {
+            case Strings::get('actions.goHome'):
+                UserState::set($senderId, UserState::DEFAULT);
+                Twitter::message(Strings::get('messages.home'))
+                    ->withDefaultActions()
+                    ->sendTo($senderId);
+                break;
+
+            case Strings::get('actions.subscribe'):
+                UserState::set($senderId, UserState::SUBSCRIBING);
+                Twitter::message(Strings::get('messages.chooseLineToSubscribe'))->sendTo($senderId);
+                break;
+
+            case Strings::get('actions.unsubscribe'):
+                UserState::set($senderId, UserState::UNSUBSCRIBING);
+                Twitter::message(Strings::get('messages.chooseLineToUnsubscribe'))->sendTo($senderId);
+                break;
+
+            default:
+                $state = UserState::get($senderId);
+
+                if ($state === UserState::SUBSCRIBING || $state === UserState::UNSUBSCRIBING) {
+                    $line = Subscriptions::validateLineName($message);
+
+                    if ($line === false) {
+                        Twitter::message(Strings::get('messages.invalidLineName'))->sendTo($senderId);
+                    } else {
+                        // @TODO
+                        Twitter::message(Strings::get('messages.subscribeOK', [$line]))
+                            ->withDefaultActions()
+                            ->sendTo($senderId);
+                        UserState::set($senderId, UserState::DEFAULT);
+                    }
+                } else {
+                    Twitter::message(Strings::get('messages.unknownRequest'))
+                        ->withDefaultActions()
+                        ->sendTo($senderId);
+                }
+
+                break;
+        }
     }
 }
