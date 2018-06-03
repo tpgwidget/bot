@@ -9,14 +9,15 @@ class Strings {
             'unsubscribe' => 'Se désabonner d’une ligne',
         ],
         'messages' => [
-            'home' => "Bienvenue ! Que souhaitez-vous faire ?",
+            'home' => "Bienvenue ! Je suis un bot Twitter qui vous tiendra informé-e des perturbations sur vos lignes TPG favorites 🚌 🚎 🚋. \nQue souhaitez-vous faire ?",
             'chooseLineToSubscribe' => "À quelle ligne voulez-vous vous abonner ?",
-            'chooseLineToUnsubscribe' => "De quelle ligne voulez-vous vous désabonner ?",
+            'chooseLineToUnsubscribe' => "De quelle ligne voulez-vous vous désabonner ? \n(Vos lignes actuelles : %s)",
+            'noLineToUnsubscribe' => 'Vous n’êtes abonné-e à aucune ligne pour l’instant ! Du coup, pas possible de se désabonner 😉',
             'invalidLineName' => 'Le nom de ligne que vous avez saisi est invalide. Veuillez taper un nom de ligne correct ou retourner à l’accueil.',
 
-            'subscribeOK' => 'C’est tout bon, vous receverez maintenant un message en cas de problème sur la ligne %s !',
+            'subscribeOK' => 'C’est tout bon, vous receverez maintenant un message en cas de problème sur la ligne %s ! 👌',
             'unsubscribeOK' => 'OK, vous ne serez désormais plus informé des problèmes sur la ligne %s.',
-            'unknownRequest' => 'Désolé, je n’ai pas tout à fait compris votre message.',
+            'unknownRequest' => 'Désolé, je n’ai pas tout à fait compris votre message 😕. Je ne suis qu’un jeune bot et je fais de mon mieux ! Si vous voulez contacter mon créateur, adressez-vous à @nicolapps.',
         ],
     ];
 

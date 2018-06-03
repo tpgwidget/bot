@@ -13,6 +13,7 @@ class TwitterController
     {
         $senderId = $event->message_create->sender_id;
         $message = trim($event->message_create->message_data->text);
+        $message = str_replace("'", "’", $message);
 
         self::handleMessage($senderId, $message);
     }
@@ -33,8 +34,18 @@ class TwitterController
                 break;
 
             case Strings::get('actions.unsubscribe'):
-                UserState::set($senderId, UserState::UNSUBSCRIBING);
-                Twitter::message(Strings::get('messages.chooseLineToUnsubscribe'))->sendTo($senderId);
+                $lines = Subscriptions::getSubscriptionsFrom($senderId);
+
+                if (empty($lines)) {
+                    UserState::set($senderId, UserState::DEFAULT);
+                    Twitter::message(Strings::get('messages.noLineToUnsubscribe', [implode(', ', $lines)]))
+                        ->withDefaultActions()
+                        ->sendTo($senderId);
+                } else {
+                    UserState::set($senderId, UserState::UNSUBSCRIBING);
+                    Twitter::message(Strings::get('messages.chooseLineToUnsubscribe', [implode(', ', $lines)]))
+                        ->sendTo($senderId);
+                }
                 break;
 
             default:

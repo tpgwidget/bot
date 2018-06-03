@@ -74,6 +74,28 @@ class Subscriptions
     }
 
     /**
+     * Get all the lines an user is subscribed to
+     * @param  string $userId The Twitter user ID
+     * @return array          All the lines
+     */
+    public static function getSubscriptionsFrom($userId): array
+    {
+        global $db;
+
+        $lines = [];
+
+        $req = $db->prepare('SELECT line FROM subscriptions WHERE user_id = ? ORDER BY line');
+        $req->execute([$userId]);
+        $subscriptions = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($subscriptions as $subscription) {
+            $lines[] = $subscription['line'];
+        }
+
+        return $lines;
+    }
+
+    /**
      * Format a disruption text
      * @param  mixed[] $disruption Disruption data
      * @return string              Disruption text
