@@ -21,6 +21,49 @@ class Subscriptions
     }
 
     /**
+     * Validate a line name
+     * @param  string      $input The user input (e.g. 'Le tram 12')
+     * @return string|bool        The well-formatted line name (e.g. '12'), or false
+     */
+    public static function validateLineName(string $input)
+    {
+        $matches = [];
+        $pattern = '/^(?:le |la )?(?:ligne |bus |tram )?([A-z]{1,2}|[0-9]{1,2})/i';
+
+        if (preg_match($pattern, $input, $matches) === 0) { // No valid name found
+            return false;
+        }
+
+        return strtoupper($matches[1]);
+    }
+
+    /**
+     * Subscribe to a line
+     * @param  string $userId Twitter user ID
+     * @param  string $line   Line name
+     */
+    public static function subscribe($userId, $line)
+    {
+        global $db;
+
+        $req = $db->prepare('INSERT INTO subscriptions(user_id, line) VALUES (?, ?)');
+        $req->execute([$userId, $line]);
+    }
+
+    /**
+     * Unsubscribe from a line
+     * @param  string $userId Twitter user ID
+     * @param  string $line   Line name
+     */
+    public static function unsubscribe($userId, $line)
+    {
+        global $db;
+
+        $req = $db->prepare('DELETE FROM subscriptions WHERE user_id = ? AND line = ?');
+        $req->execute([$userId, $line]);
+    }
+
+    /**
      * Format a disruption text
      * @param  mixed[] $disruption Disruption data
      * @return string              Disruption text
@@ -37,22 +80,5 @@ class Subscriptions
         $text .= $disruption['consequence'];
 
         return $text;
-    }
-
-    /**
-     * Validate a line name
-     * @param  string      $input The user input (e.g. 'Le tram 12')
-     * @return string|bool        The well-formatted line name (e.g. '12'), or false
-     */
-    public static function validateLineName(string $input)
-    {
-        $matches = [];
-        $pattern = '/^(?:le |la )?(?:ligne |bus |tram )?([A-z]{1,2}|[0-9]{1,2})/i';
-
-        if (preg_match($pattern, $input, $matches) === 0) { // No valid name found
-            return false;
-        }
-
-        return strtoupper($matches[1]);
     }
 }

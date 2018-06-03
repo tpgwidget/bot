@@ -46,8 +46,15 @@ class TwitterController
                     if ($line === false) {
                         Twitter::message(Strings::get('messages.invalidLineName'))->sendTo($senderId);
                     } else {
-                        // @TODO
-                        Twitter::message(Strings::get('messages.subscribeOK', [$line]))
+                        $action = $state === UserState::SUBSCRIBING ? 'subscribe' : 'unsubscribe';
+
+                        if ($action === 'subscribe') {
+                            Subscriptions::subscribe($senderId, $line);
+                        } else {
+                            Subscriptions::unsubscribe($senderId, $line);
+                        }
+
+                        Twitter::message(Strings::get('messages.'.$action.'OK', [$line]))
                             ->withDefaultActions()
                             ->sendTo($senderId);
                         UserState::set($senderId, UserState::DEFAULT);
