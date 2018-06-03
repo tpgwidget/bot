@@ -11,12 +11,22 @@ class Subscriptions
      */
     public static function send($disruptions)
     {
+        global $db;
+
         foreach ($disruptions as $disruption)
         {
-            Twitter::lib()->post('direct_messages/new', [
-                'user_id' => '2276497146',
-                'text' => self::formatDisruption($disruption),
-            ]);
+            $content = self::formatDisruption($disruption);
+
+            $query = $db->prepare('SELECT user_id FROM subscriptions WHERE line = ?');
+            $query->execute([$disruption['lineCode']]);
+            $subscribers = $query->fetchAll(\PDO::FETCH_ASSOC);
+
+            foreach ($subscribers as $subscriber) {
+                Twitter::lib()->post('direct_messages/new', [
+                    'user_id' => $subscriber['user_id'],
+                    'text' => $content,
+                ]);
+            }
         }
     }
 
@@ -74,7 +84,7 @@ class Subscriptions
         $text = '⚠️ '.$disruption['nature']. ' (ligne '.$disruption['lineCode'].')'.PHP_EOL.PHP_EOL;
 
         // Place
-        $text .= (trim($disruption['place']) !== '' ? trim($disruption['place']).' – ' : '');
+        $text .= (trim($disruption['place'] ?? '') !== '' ? trim($disruption['place']).' – ' : '');
 
         // Content
         $text .= $disruption['consequence'];
