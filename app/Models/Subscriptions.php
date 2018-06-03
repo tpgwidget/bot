@@ -38,7 +38,7 @@ class Subscriptions
     public static function validateLineName(string $input)
     {
         $matches = [];
-        $pattern = '/^(?:le |la )?(?:ligne |bus |tram )?([A-z]{1,2}|[0-9]{1,2})/i';
+        $pattern = '/^(?:de |à )?(?:le |la )?(?:ligne |bus |tram )?([A-z]{1,2}|[0-9]{1,2})/i';
 
         if (preg_match($pattern, $input, $matches) === 0) { // No valid name found
             return false;
