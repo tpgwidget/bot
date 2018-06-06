@@ -4,6 +4,9 @@ namespace TPGwidget\Bot\Controllers;
 use TPGwidget\Bot\Models\Disruptions;
 use TPGwidget\Bot\Models\Subscriptions;
 
+/**
+ * Manages the disruptions update
+ */
 class DisruptionsController
 {
     /**

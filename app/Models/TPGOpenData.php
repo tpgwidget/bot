@@ -1,6 +1,9 @@
 <?php
 namespace TPGwidget\Bot\Models;
 
+/**
+ * Allows us to use the TPG API
+ */
 class TPGOpenData
 {
     /**

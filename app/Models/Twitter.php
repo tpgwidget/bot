@@ -4,6 +4,9 @@ namespace TPGwidget\Bot\Models;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use TPGwidget\Bot\Models\TwitterDirectMessage;
 
+/**
+ * Methods useful to interact with the Twitter API
+ */
 class Twitter
 {
     private static $lib;

@@ -1,6 +1,9 @@
 <?php
 namespace TPGwidget\Bot\Models;
 
+/**
+ * All the messages that can be sent to the end user
+ */
 class Strings {
     public const STRINGS = [
         'actions' => [

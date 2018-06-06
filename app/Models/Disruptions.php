@@ -3,6 +3,9 @@ namespace TPGwidget\Bot\Models;
 
 use TPGwidget\Bot\Models\TPGOpenData;
 
+/**
+ * TPG disruptions model
+ */
 class Disruptions
 {
     /**

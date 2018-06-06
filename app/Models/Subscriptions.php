@@ -3,6 +3,9 @@ namespace TPGwidget\Bot\Models;
 
 use TPGwidget\Bot\Models\Twitter;
 
+/**
+ * Manages the subscriptions (from an user to a TPG line)
+ */
 class Subscriptions
 {
     /**

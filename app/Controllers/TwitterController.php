@@ -3,6 +3,9 @@ namespace TPGwidget\Bot\Controllers;
 
 use TPGwidget\Bot\Models\{Twitter, UserState, Strings, Subscriptions};
 
+/**
+ * Manages the incoming Twitter direct messages
+ */
 class TwitterController
 {
     /**

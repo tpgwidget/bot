@@ -3,6 +3,7 @@ namespace TPGwidget\Bot\Models;
 
 /**
  * Get the current “state” of an user
+ * (Useful to track the current state of a chatbot conversation)
  */
 class UserState {
     //==============================================================================================
