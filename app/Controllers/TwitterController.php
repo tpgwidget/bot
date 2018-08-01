@@ -41,13 +41,23 @@ class TwitterController
 
                 if (empty($lines)) {
                     UserState::set($senderId, UserState::DEFAULT);
-                    Twitter::message(Strings::get('messages.noLineToUnsubscribe', [implode(', ', $lines)]))
+                    Twitter::message(Strings::get('messages.noLineToUnsubscribe'))
                         ->withDefaultActions()
                         ->sendTo($senderId);
                 } else {
                     UserState::set($senderId, UserState::UNSUBSCRIBING);
-                    Twitter::message(Strings::get('messages.chooseLineToUnsubscribe', [implode(', ', $lines)]))
-                        ->sendTo($senderId);
+                    $message = Twitter::message(Strings::get('messages.chooseLineToUnsubscribe'));
+
+                    // Put the “go home” button first
+                    $message->addAction(Strings::get('actions.goHome'))
+                        ->withoutGoHome();
+
+                    // Add actions for each line
+                    foreach ($lines as $line) {
+                        $message->addAction($line);
+                    }
+
+                    $message->sendTo($senderId);
                 }
                 break;
 

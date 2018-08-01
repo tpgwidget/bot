@@ -18,7 +18,7 @@ class Strings {
         'messages' => [
             'home' => "Bienvenue ! Je suis un bot Twitter qui vous tient au courant des perturbations sur vos lignes TPG favorites 🚌 🚎 🚋. \nQue souhaitez-vous faire ?",
             'chooseLineToSubscribe' => "À quelle ligne voulez-vous vous abonner ?",
-            'chooseLineToUnsubscribe' => "De quelle ligne voulez-vous vous désabonner ? \n(Vos lignes actuelles : %s)",
+            'chooseLineToUnsubscribe' => "De quelle ligne voulez-vous vous désabonner ?",
             'noLineToUnsubscribe' => 'Vous n’êtes abonné-e à aucune ligne pour l’instant ! Du coup, pas possible de se désabonner 😉',
             'invalidLineName' => 'Le nom de ligne que vous avez saisi est invalide. Veuillez taper un nom de ligne correct ou retourner à l’accueil.',
 
