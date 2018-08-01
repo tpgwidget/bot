@@ -52,8 +52,8 @@ class TwitterDirectMessage {
     public function withDefaultActions()
     {
         return $this
-            ->addAction(Strings::get('actions.subscribe'))
-            ->addAction(Strings::get('actions.unsubscribe'))
+            ->addAction(Strings::get('actions.subscribe'), Strings::get('descriptions.subscribe'))
+            ->addAction(Strings::get('actions.unsubscribe'), Strings::get('descriptions.unsubscribe'))
             ->withoutGoHome();
     }
 
@@ -68,32 +68,38 @@ class TwitterDirectMessage {
             $this->addAction(Strings::get('actions.goHome'));
         }
 
-        Twitter::lib()->post('direct_messages/new', [
-            'user_id' => $userId,
-            'text' => $this->text.$this->formatActions(),
-        ]);
+        $message = [
+            'text' => $this->text,
+        ];
+
+        if (! empty($this->actions)) {
+            $options = [];
+
+            foreach ($this->actions as $action) {
+                $options[] = [
+                    'label'       => $action['title'],
+                    'description' => $action['description'],
+                ];
+            }
+
+            $message['quick_reply'] = [
+                'type'    => 'options',
+                'options' => $options,
+            ];
+        }
+
+        Twitter::lib()->post('direct_messages/events/new', [
+            'event' => [
+                'type' => 'message_create',
+                'message_create' => [
+                    'target' => [
+                        'recipient_id' => $userId
+                    ],
+                    'message_data' => $message,
+                ]
+            ]
+        ], true);
 
         return $this;
-    }
-
-    /**
-     * TEMP : Format the actions as text
-     * @return string
-     */
-    private function formatActions(): string {
-        if (empty($this->actions)) {
-            return '';
-        }
-
-        $result = "\n\nActions disponibles :";
-
-        foreach ($this->actions as $action) {
-            $result .= "\n• ".$action['title'];
-            if (!is_null($action['description'])) {
-                $result .= "\n".$action['description'];
-            }
-        }
-
-        return $result;
     }
 }

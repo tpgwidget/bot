@@ -7,9 +7,13 @@ namespace TPGwidget\Bot\Models;
 class Strings {
     public const STRINGS = [
         'actions' => [
-            'goHome' => 'Retourner à l’accueil',
-            'subscribe' => 'S’abonner à une ligne',
-            'unsubscribe' => 'Se désabonner d’une ligne',
+            'goHome' => '🏡 Retourner à l’accueil',
+            'subscribe' => '📲 S’abonner à une ligne',
+            'unsubscribe' => '🛑 Se désabonner d’une ligne',
+        ],
+        'descriptions' => [
+            'subscribe' => 'Recevoir un message quand un incident se passe sur une ligne.',
+            'unsubscribe' => 'Arrêter de recevoir des messages pour une ligne.',
         ],
         'messages' => [
             'home' => "Bienvenue ! Je suis un bot Twitter qui vous tiendra informé-e des perturbations sur vos lignes TPG favorites 🚌 🚎 🚋. \nQue souhaitez-vous faire ?",
