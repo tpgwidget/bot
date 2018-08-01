@@ -12,11 +12,11 @@ class Strings {
             'unsubscribe' => '🛑 Se désabonner d’une ligne',
         ],
         'descriptions' => [
-            'subscribe' => 'Recevoir un message quand un incident se passe sur une ligne.',
-            'unsubscribe' => 'Arrêter de recevoir des messages pour une ligne.',
+            'subscribe' => 'Recevoir les perturbations d’une ligne',
+            'unsubscribe' => 'Arrêter les messages pour une ligne',
         ],
         'messages' => [
-            'home' => "Bienvenue ! Je suis un bot Twitter qui vous tiendra informé-e des perturbations sur vos lignes TPG favorites 🚌 🚎 🚋. \nQue souhaitez-vous faire ?",
+            'home' => "Bienvenue ! Je suis un bot Twitter qui vous tient au courant des perturbations sur vos lignes TPG favorites 🚌 🚎 🚋. \nQue souhaitez-vous faire ?",
             'chooseLineToSubscribe' => "À quelle ligne voulez-vous vous abonner ?",
             'chooseLineToUnsubscribe' => "De quelle ligne voulez-vous vous désabonner ? \n(Vos lignes actuelles : %s)",
             'noLineToUnsubscribe' => 'Vous n’êtes abonné-e à aucune ligne pour l’instant ! Du coup, pas possible de se désabonner 😉',
