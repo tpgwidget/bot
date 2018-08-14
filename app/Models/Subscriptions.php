@@ -1,7 +1,7 @@
 <?php
 namespace TPGwidget\Bot\Models;
 
-use TPGwidget\Bot\Models\Twitter;
+use TPGwidget\Bot\Models\{Twitter, UserState};
 
 /**
  * Manages the subscriptions (from an user to a TPG line)
@@ -25,10 +25,10 @@ class Subscriptions
             $subscribers = $query->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($subscribers as $subscriber) {
-                Twitter::lib()->post('direct_messages/new', [
-                    'user_id' => $subscriber['user_id'],
-                    'text' => $content,
-                ]);
+                UserState::set($subscriber['user_id'], UserState::DEFAULT);
+                Twitter::message($content)
+                    ->withDefaultActions()
+                    ->sendTo($subscriber['user_id']);
             }
         }
     }
