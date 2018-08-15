@@ -1,7 +1,7 @@
 <?php
 namespace TPGwidget\Bot\Controllers;
 
-use TPGwidget\Bot\Models\{Twitter, UserState, Strings, Subscriptions};
+use TPGwidget\Bot\Models\{Disruptions, Twitter, UserState, Strings, Subscriptions};
 
 /**
  * Manages the incoming Twitter direct messages
@@ -78,10 +78,34 @@ class TwitterController
                             Subscriptions::unsubscribe($senderId, $line);
                         }
 
+                        UserState::set($senderId, UserState::DEFAULT);
+
                         Twitter::message(Strings::get('messages.'.$action.'OK', [$line]))
                             ->withDefaultActions()
                             ->sendTo($senderId);
-                        UserState::set($senderId, UserState::DEFAULT);
+
+                        // Send the current line status
+                        if ($action === 'subscribe') {
+                            $currentDisruptions = Disruptions::getCurrentFrom($line);
+
+                            if (empty($currentDisruptions)) {
+                                $stringName = 'messages.noOngoingDisruptions';
+                            } else {
+                                $stringName = count($currentDisruptions) === 1
+                                    ? 'messages.ongoingDisruption'
+                                    : 'messages.ongoingDisruptions';
+                            }
+
+                            Twitter::message(Strings::get($stringName))
+                                ->withDefaultActions()
+                                ->sendTo($senderId);
+
+                            foreach ($currentDisruptions as $disruption) {
+                                Twitter::message(Disruptions::format($disruption, false))
+                                    ->withDefaultActions()
+                                    ->sendTo($senderId);
+                            }
+                        }
                     }
                 } else {
                     Twitter::message(Strings::get('messages.unknownRequest'))

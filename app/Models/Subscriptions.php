@@ -1,7 +1,7 @@
 <?php
 namespace TPGwidget\Bot\Models;
 
-use TPGwidget\Bot\Models\{Twitter, UserState};
+use TPGwidget\Bot\Models\{Disruptions, Twitter, UserState};
 
 /**
  * Manages the subscriptions (from an user to a TPG line)
@@ -18,7 +18,7 @@ class Subscriptions
 
         foreach ($disruptions as $disruption)
         {
-            $content = self::formatDisruption($disruption);
+            $content = Disruptions::format($disruption);
 
             $query = $db->prepare('SELECT user_id FROM subscriptions WHERE line = ?');
             $query->execute([$disruption['lineCode']]);
@@ -96,24 +96,5 @@ class Subscriptions
         }
 
         return $lines;
-    }
-
-    /**
-     * Format a disruption text
-     * @param  mixed[] $disruption Disruption data
-     * @return string              Disruption text
-     */
-    private static function formatDisruption(array $disruption)
-    {
-        // Header (line and nature)
-        $text = '⚠️ '.$disruption['nature']. ' (ligne '.$disruption['lineCode'].')'.PHP_EOL.PHP_EOL;
-
-        // Place
-        $text .= (trim($disruption['place'] ?? '') !== '' ? trim($disruption['place']).' – ' : '');
-
-        // Content
-        $text .= $disruption['consequence'];
-
-        return $text;
     }
 }

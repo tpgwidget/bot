@@ -25,27 +25,16 @@ class Disruptions
     }
 
     /**
-     * Get the disruptions stored in database
+     * Get the current disruptions for a line
+     * @param  string $lineCode TPG line code (= name)
      * @return mixed[]
      */
-    private static function getStored()
-    {
-        global $db;
+    public static function getCurrentFrom(string $lineCode) {
+        $current = TPGOpenData::fetch('Disruptions');
 
-        $req = $db->query('SELECT timestamp, place, nature, consequence, lineCode
-        FROM disruptions
-        '); // WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
-
-        $disruptions = $req->fetchAll(\PDO::FETCH_ASSOC);
-
-        // Format the perturbation timestamp at the ISO format,
-        // used by the TPG Open Data API
-        $disruptions = array_map(function($disruption) {
-            $disruption['timestamp'] = date('Y-m-d\TH:i:sO', strtotime($disruption['timestamp']));
-            return $disruption;
-        }, $disruptions);
-
-        return $disruptions;
+        return array_filter($current, function($disruption) use ($lineCode) {
+            return $lineCode == $disruption['lineCode'];
+        });
     }
 
     /**
@@ -80,5 +69,55 @@ class Disruptions
         );
 
         $req->execute($bind);
+    }
+
+    /**
+     * Format a disruption text
+     * @param  mixed[] $disruption   Disruption data
+     * @param  boolean $withLineCode Include the line code in the output
+     * @return string                Disruption text
+     */
+    public static function format(array $disruption, $withLineCode = true)
+    {
+        // Header (line and nature)
+        $text = '⚠️ '.$disruption['nature'];
+
+        if ($withLineCode) {
+            $text .= ' (ligne '.$disruption['lineCode'].')';
+        }
+
+        $text .= PHP_EOL.PHP_EOL;
+
+        // Place
+        $text .= (trim($disruption['place'] ?? '') !== '' ? trim($disruption['place']).' – ' : '');
+
+        // Content
+        $text .= trim($disruption['consequence']);
+
+        return $text;
+    }
+
+    /**
+     * Get the disruptions stored in the database
+     * @return mixed[]
+     */
+    private static function getStored()
+    {
+        global $db;
+
+        $req = $db->query('SELECT timestamp, place, nature, consequence, lineCode
+        FROM disruptions
+        '); // WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+
+        $disruptions = $req->fetchAll(\PDO::FETCH_ASSOC);
+
+        // Format the perturbation timestamp at the ISO format,
+        // used by the TPG Open Data API
+        $disruptions = array_map(function($disruption) {
+            $disruption['timestamp'] = date('Y-m-d\TH:i:sO', strtotime($disruption['timestamp']));
+            return $disruption;
+        }, $disruptions);
+
+        return $disruptions;
     }
 }
